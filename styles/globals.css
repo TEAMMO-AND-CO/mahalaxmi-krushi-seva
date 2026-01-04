@@ -1,49 +1,43 @@
 @import "tailwindcss";
 
 @theme {
-  /* Gold Palette */
-  --color-gold: #d4a017;
-  --color-gold-light: #f4d03f;
-  --color-gold-dark: #b37f11;
+  /* Green Palette */
+  --color-green: #16a34a;
+  --color-green-light: #3da14a;
+  --color-green-dark: #0f7a33;
 
-  /* Accent Colors */
-  --color-accent: #c62828;
-  --color-accent-dark: #8e0000;
+  /* Accent (subtle darker green) */
+  --color-accent: #0b6030;
+  --color-accent-dark: #084822;
 
   /* Neutral Colors */
   --color-light: #fffef9;
   --color-cream: #faf6f0;
   --color-muted: #6b6b6b;
-  --color-text: #2b1f1f;
+  --color-text: #153528;
   --color-white: #ffffff;
 
-  /* Gray Scale (for compatibility) */
+  /* Gray Scale (compat) */
   --color-gray-50: #fffef9;
   --color-gray-100: #faf6f0;
   --color-gray-200: #e5e7eb;
   --color-gray-300: #d1d5db;
   --color-gray-600: #6b6b6b;
-  --color-gray-700: #2b1f1f;
-  --color-gray-900: #2b1f1f;
+  --color-gray-700: #345a43;
+  --color-gray-900: #153528;
 
-  /* Brand Colors */
-  --color-brand-primary: #d4a017;
-  --color-brand-secondary: #c62828;
+  /* Brand */
+  --color-brand-primary: var(--color-green);
+  --color-brand-secondary: var(--color-accent);
 
-  /* Border Radius */
+  /* Radius / Shadows / Layout / Transition */
   --radius: 12px;
   --radius-sm: 8px;
   --radius-lg: 16px;
-
-  /* Shadows */
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
   --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
   --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.16);
-
-  /* Layout */
   --max-width: 1200px;
-
-  /* Transitions */
   --transition: 300ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -115,17 +109,17 @@
     padding-right: 1rem;
   }
 
+  /* Buttons */
   .btn-primary {
-    background-color: var(--color-gold);
+    background-color: var(--color-green);
     color: var(--color-white);
     padding: 0.75rem 1.5rem;
     border-radius: var(--radius-sm);
     font-weight: 600;
     transition: all var(--transition);
   }
-
   .btn-primary:hover {
-    background-color: var(--color-gold-dark);
+    background-color: var(--color-green-dark);
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
   }
@@ -138,30 +132,29 @@
     font-weight: 600;
     transition: all var(--transition);
   }
-
   .btn-accent:hover {
     background-color: var(--color-accent-dark);
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
   }
 
+  /* Cards / gradients / text gradient updated for green */
   .card {
     background-color: var(--color-white);
     border-radius: var(--radius);
     box-shadow: var(--shadow-sm);
     transition: all var(--transition);
   }
-
   .card:hover {
     box-shadow: var(--shadow-md);
     transform: translateY(-4px);
   }
 
-  .gradient-gold {
+  .gradient-green {
     background: linear-gradient(
       135deg,
-      var(--color-gold-light),
-      var(--color-gold)
+      var(--color-green-light),
+      var(--color-green)
     );
   }
 
@@ -174,7 +167,11 @@
   }
 
   .text-gradient {
-    background: linear-gradient(135deg, var(--color-gold), var(--color-accent));
+    background: linear-gradient(
+      135deg,
+      var(--color-green),
+      var(--color-accent)
+    );
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -188,8 +185,8 @@
     color: var(--color-muted);
   }
 
-  .text-gold {
-    color: var(--color-gold);
+  .text-green {
+    color: var(--color-green);
   }
 
   .text-accent {

@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
 import { APP_CONFIG } from "../../config/constants";
 
 export default function Cart() {
@@ -61,12 +61,8 @@ export default function Cart() {
       <Header currentLang={currentLang} setCurrentLang={setCurrentLang} />
 
       <main className="max-w-7xl mx-auto px-4 py-12">
-        <h1 className="text-4xl font-bold text-gradient mb-8">
-          {getText(
-            "Your Shopping Cart",
-            "आपकी शॉपिंग कार्ट",
-            "तुमची शॉपिंग कार्ट"
-          )}
+        <h1 className="text-3xl font-bold text-gradient mb-6">
+          {getText("Your Cart", "आपकी कार्ट", "तुमची कार्ट")}
         </h1>
 
         {cart.length === 0 ? (
@@ -106,9 +102,7 @@ export default function Cart() {
                     <h3 className="font-bold text-[var(--color-text)] mb-2 text-lg truncate">
                       {item.name}
                     </h3>
-                    <p className="text-2xl font-bold text-gradient mb-4">
-                      ₹{item.price}
-                    </p>
+                    <p className="text-gradient font-bold">₹{item.price}</p>
 
                     <div className="flex items-center gap-3">
                       <div className="flex items-center bg-[var(--color-cream)] rounded-[var(--radius-sm)] overflow-hidden">
@@ -134,7 +128,7 @@ export default function Cart() {
                       </div>
                       <button
                         onClick={() => removeItem(item.id)}
-                        className="ml-auto text-[var(--color-accent)] hover:text-[var(--color-accent-dark)] font-medium transition-colors"
+                        className="ml-auto text-[var(--color-accent)] hover:underline text-sm"
                       >
                         {getText("Remove", "हटाएं", "काढा")}
                       </button>
@@ -256,22 +250,20 @@ export default function Cart() {
                     )}
                   </span>
                 </div>
-                <div className="flex justify-between font-bold text-2xl border-t-2 border-[var(--color-gold)] pt-4">
-                  <span className="text-[var(--color-text)]">
-                    {getText("Total:", "कुल:", "एकूण:")}
-                  </span>
+                <div className="flex justify-between font-bold text-lg border-t border-gray-200 pt-2">
+                  <span>{getText("Total:", "कुल:", "एकूण:")}</span>
                   <span className="text-gradient">₹{total}</span>
                 </div>
               </div>
 
               <button
                 onClick={handleCheckout}
-                className="w-full btn-primary py-4 text-lg font-bold mt-6"
+                className="w-full btn-primary py-3 rounded-lg font-semibold mt-6"
               >
                 {getText(
-                  "Confirm Order →",
-                  "ऑर्डर की पुष्टि करें →",
-                  "ऑर्डर निश्चित करा →"
+                  "Confirm Order",
+                  "ऑर्डर की पुष्टि करें",
+                  "ऑर्डर निश्चित करा"
                 )}
               </button>
 

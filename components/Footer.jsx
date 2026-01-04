@@ -2,11 +2,11 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="bg-gradient-to-br from-[var(--color-text)] to-[#1a1212] text-white mt-16">
+    <footer className="bg-gradient-to-br from-[var(--color-green-dark)] to-[var(--color-accent)] text-white mt-12">
       <div className="max-w-7xl mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           <div>
-            <h3 className="font-bold text-xl mb-4 text-gradient bg-gradient-to-r from-[var(--color-gold-light)] to-[var(--color-gold)]">
+            <h3 className="font-bold text-xl mb-4 text-white">
               Mahalaxmi Krushi Seva Kendra
             </h3>
             <p className="text-sm text-gray-300 leading-relaxed">

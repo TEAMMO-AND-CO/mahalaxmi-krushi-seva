@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import Header from "../../components/Header";
-import Footer from "../../components/Footer";
+import Header from "../../../components/Header";
+import Footer from "../../../components/Footer";
 import { PRODUCTS } from "../../../data/products";
 
 export default function ProductDetail({ params }) {
@@ -79,7 +79,7 @@ export default function ProductDetail({ params }) {
           {/* Product Info */}
           <div className="space-y-6">
             <div>
-              <h1 className="text-4xl font-bold text-[var(--color-text)] mb-4 leading-tight">
+              <h1 className="text-3xl font-bold text-[var(--color-text)] mb-4">
                 {getName()}
               </h1>
               <div className="flex items-baseline gap-3">
@@ -152,13 +152,13 @@ export default function ProductDetail({ params }) {
             {/* Add to Cart Button */}
             <button
               onClick={handleAddToCart}
-              className="w-full btn-primary py-4 text-lg font-bold"
+              className="w-full btn-primary py-3 rounded-lg font-semibold"
             >
               {currentLang === "hi"
-                ? "🛒 कार्ट में जोड़ें"
+                ? "कार्ट में जोड़ें"
                 : currentLang === "mr"
-                ? "🛒 कार्टमध्ये जोडा"
-                : "🛒 Add to Cart"}
+                ? "कार्टमध्ये जोडा"
+                : "Add to Cart"}
             </button>
 
             <div className="flex items-center gap-4 text-sm text-[var(--color-muted)]">

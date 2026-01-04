@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import ProductCard from "./components/ProductCard";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+import ProductCard from "../components/ProductCard";
 import { PRODUCTS, BLOGS_VIDEOS } from "../data/products";
 import { CATEGORIES } from "../config/constants";
 
@@ -29,7 +29,7 @@ export default function HomePage() {
 
       <main>
         {/* Hero Section */}
-        <section className="relative min-h-[70vh] flex items-center bg-gradient-to-br from-[var(--color-gold)] via-[var(--color-gold-dark)] to-[var(--color-accent)] overflow-hidden">
+        <section className="relative min-h-[70vh] flex items-center bg-gradient-to-br from-[var(--color-green-light)] via-[var(--color-green)] to-[var(--color-green-dark)] overflow-hidden">
           <div className="absolute inset-0 opacity-10">
             <Image
               src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?w=1600"
@@ -41,8 +41,8 @@ export default function HomePage() {
           </div>
 
           {/* Decorative elements */}
-          <div className="absolute top-0 right-0 w-96 h-96 bg-[var(--color-gold-light)] rounded-full blur-3xl opacity-20 animate-pulse" />
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-[var(--color-accent)] rounded-full blur-3xl opacity-20 animate-pulse delay-1000" />
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[var(--color-green-light)] rounded-full blur-3xl opacity-18 animate-pulse" />
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-[var(--color-green-dark)] rounded-full blur-3xl opacity-14 animate-pulse delay-1000" />
 
           <div className="relative max-w-7xl mx-auto px-4 py-20 text-white z-10">
             <div className="max-w-3xl">
@@ -63,7 +63,7 @@ export default function HomePage() {
               <div className="flex flex-wrap gap-4">
                 <a
                   href="#products"
-                  className="bg-white text-[var(--color-gold-dark)] px-8 py-4 rounded-[var(--radius-sm)] font-bold hover:shadow-elevated hover:scale-105 transition-all"
+                  className="bg-white text-[var(--color-green-dark)] px-8 py-4 rounded-[var(--radius-sm)] font-bold hover:shadow-elevated hover:scale-105 transition-all"
                 >
                   {currentLang === "hi"
                     ? "उत्पाद देखें"

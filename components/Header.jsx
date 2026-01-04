@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -15,7 +17,7 @@ export default function Header({ currentLang, setCurrentLang }) {
             <div className="relative w-12 h-12 rounded-full overflow-hidden ring-2 ring-[var(--color-gold)]/20 group-hover:ring-[var(--color-gold)]/50 transition-all">
               <Image src="/ml.png" alt="Logo" fill className="object-cover" />
             </div>
-            <span className="font-bold text-gradient text-base md:text-lg hidden sm:block">
+            <span className="font-semibold text-[var(--color-green)] text-sm md:text-base hidden sm:block">
               Mahalaxmi Krushi Seva
             </span>
           </Link>
@@ -24,31 +26,31 @@ export default function Header({ currentLang, setCurrentLang }) {
           <nav className="hidden md:flex items-center gap-8">
             <Link
               href="/"
-              className="text-[var(--color-text)] hover:text-[var(--color-gold)] font-medium transition-colors relative group"
+              className="text-[var(--color-text)] hover:text-[var(--color-green-light)] font-medium transition-colors relative group"
             >
               Home
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-gold group-hover:w-full transition-all" />
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-green group-hover:w-full transition-all" />
             </Link>
             <Link
               href="/#products"
-              className="text-[var(--color-text)] hover:text-[var(--color-gold)] font-medium transition-colors relative group"
+              className="text-[var(--color-text)] hover:text-[var(--color-green-light)] font-medium transition-colors relative group"
             >
               Products
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-gold group-hover:w-full transition-all" />
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-green group-hover:w-full transition-all" />
             </Link>
             <Link
               href="/#blogs"
-              className="text-[var(--color-text)] hover:text-[var(--color-gold)] font-medium transition-colors relative group"
+              className="text-[var(--color-text)] hover:text-[var(--color-green-light)] font-medium transition-colors relative group"
             >
               Blogs
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-gold group-hover:w-full transition-all" />
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-green group-hover:w-full transition-all" />
             </Link>
             <Link
               href="/cart"
-              className="text-[var(--color-text)] hover:text-[var(--color-gold)] font-medium transition-colors relative group"
+              className="text-[var(--color-text)] hover:text-[var(--color-green-light)] font-medium transition-colors relative group"
             >
               Cart
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-gold group-hover:w-full transition-all" />
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-green group-hover:w-full transition-all" />
             </Link>
           </nav>
 
@@ -60,7 +62,7 @@ export default function Header({ currentLang, setCurrentLang }) {
                 onClick={() => setCurrentLang(lang.code)}
                 className={`px-3 py-1.5 text-sm rounded-md font-medium transition-all ${
                   currentLang === lang.code
-                    ? "gradient-gold text-white shadow-sm"
+                    ? "gradient-green text-white shadow-sm"
                     : "text-[var(--color-muted)] hover:text-[var(--color-text)] hover:bg-white"
                 }`}
               >
@@ -96,7 +98,7 @@ export default function Header({ currentLang, setCurrentLang }) {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <nav className="md:hidden pb-4 flex flex-col gap-1 animate-fadeIn">
+          <nav className="md:hidden pb-4 flex flex-col gap-1">
             <Link
               href="/"
               className="text-[var(--color-text)] py-3 px-4 hover:bg-[var(--color-cream)] rounded-lg transition-colors font-medium"
