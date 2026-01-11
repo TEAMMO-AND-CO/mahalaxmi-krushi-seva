@@ -1,12 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Dispatch, SetStateAction } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { APP_CONFIG } from "../config/constants";
+import { Language } from "../types";
 
-export default function Header({ currentLang, setCurrentLang }) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+interface HeaderProps {
+  currentLang: Language;
+  setCurrentLang: Dispatch<SetStateAction<Language>>;
+}
+
+export default function Header({ currentLang, setCurrentLang }: HeaderProps) {
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
   return (
     <header className="bg-white/95 sticky top-0 z-30 shadow-soft backdrop-blur-md border-b border-[var(--color-cream)]">
@@ -59,7 +65,7 @@ export default function Header({ currentLang, setCurrentLang }) {
             {APP_CONFIG.languages.map((lang) => (
               <button
                 key={lang.code}
-                onClick={() => setCurrentLang(lang.code)}
+                onClick={() => setCurrentLang(lang.code as "en" | "hi" | "mr")}
                 className={`px-3 py-1.5 text-sm rounded-md font-medium transition-all ${
                   currentLang === lang.code
                     ? "gradient-green text-white shadow-sm"

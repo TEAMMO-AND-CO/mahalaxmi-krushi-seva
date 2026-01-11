@@ -1,26 +1,46 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import Image from "next/image";
-import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import { APP_CONFIG } from "../../config/constants";
 
+interface CartItem {
+  id: number;
+  name: string;
+  price: number;
+  image: string;
+  quantity: number;
+}
+
 export default function Cart() {
-  const [currentLang, setCurrentLang] = useState("en");
-  const [cart, setCart] = useState([]);
-  const [deliveryOption, setDeliveryOption] = useState("delivery");
-  const [selectedStore, setSelectedStore] = useState(
-    APP_CONFIG.pickupStores[0].id
-  );
-  const [paymentMethod, setPaymentMethod] = useState("online");
+  const [currentLang]: [
+    string,
+    Dispatch<SetStateAction<string>>
+  ] = useState("en");
+  const [cart, setCart]: [CartItem[], Dispatch<SetStateAction<CartItem[]>>] =
+    useState<CartItem[]>([]);
+  const [deliveryOption, setDeliveryOption]: [
+    string,
+    Dispatch<SetStateAction<string>>
+  ] = useState("delivery");
+  const [selectedStore, setSelectedStore]: [
+    number,
+    Dispatch<SetStateAction<number>>
+  ] = useState(APP_CONFIG.pickupStores[0].id);
+  const [paymentMethod, setPaymentMethod]: [
+    string,
+    Dispatch<SetStateAction<string>>
+  ] = useState("online");
 
   useEffect(() => {
-    const savedCart = JSON.parse(localStorage.getItem("cart") || "[]");
+    const savedCart = JSON.parse(
+      localStorage.getItem("cart") || "[]"
+    ) as CartItem[];
     setCart(savedCart);
   }, []);
 
-  const updateQuantity = (id, newQuantity) => {
+  const updateQuantity = (id: number, newQuantity: number): void => {
     const updatedCart = cart.map((item) =>
       item.id === id ? { ...item, quantity: Math.max(1, newQuantity) } : item
     );
@@ -28,29 +48,29 @@ export default function Cart() {
     localStorage.setItem("cart", JSON.stringify(updatedCart));
   };
 
-  const removeItem = (id) => {
+  const removeItem = (id: number): void => {
     const updatedCart = cart.filter((item) => item.id !== id);
     setCart(updatedCart);
     localStorage.setItem("cart", JSON.stringify(updatedCart));
   };
 
-  const subtotal = cart.reduce(
+  const subtotal: number = cart.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
   );
-  const deliveryFee =
+  const deliveryFee: number =
     deliveryOption === "delivery" && subtotal < APP_CONFIG.freeDeliveryThreshold
       ? APP_CONFIG.deliveryFee
       : 0;
-  const total = subtotal + deliveryFee;
+  const total: number = subtotal + deliveryFee;
 
-  const handleCheckout = () => {
+  const handleCheckout = (): void => {
     alert("Order placed successfully! (This is a demo)");
     localStorage.removeItem("cart");
     setCart([]);
   };
 
-  const getText = (en, hi, mr) => {
+  const getText = (en: string, hi: string, mr: string): string => {
     if (currentLang === "hi") return hi;
     if (currentLang === "mr") return mr;
     return en;
@@ -58,8 +78,6 @@ export default function Cart() {
 
   return (
     <>
-      <Header currentLang={currentLang} setCurrentLang={setCurrentLang} />
-
       <main className="max-w-7xl mx-auto px-4 py-12">
         <h1 className="text-3xl font-bold text-gradient mb-6">
           {getText("Your Cart", "आपकी कार्ट", "तुमची कार्ट")}

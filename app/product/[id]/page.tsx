@@ -1,30 +1,49 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import Header from "../../../components/Header";
+// import Header from "../../../components/Header";
 import Footer from "../../../components/Footer";
 import { PRODUCTS } from "../../../data/products";
 
-export default function ProductDetail({ params }) {
-  const router = useRouter();
-  const [currentLang, setCurrentLang] = useState("en");
-  const [quantity, setQuantity] = useState(1);
+type LanguageType = "en" | "hi" | "mr";
 
-  const product = PRODUCTS.find((p) => p.id === parseInt(params.id));
+interface ProductDetailProps {
+  // params comes in as a Promise for client components — unwrap with React.use()
+  params: Promise<{ id: string }>;
+
+  // ...existing code...
+}
+
+// Minimal CartItem type used for storing items in localStorage cart
+interface CartItem {
+  id: number;
+  quantity: number;
+  // allow other product properties if present
+  [key: string]: any;
+}
+
+export default function ProductDetail({ params }: ProductDetailProps) {
+  const router = useRouter();
+  const [currentLang] = useState<LanguageType>("en");
+  const [quantity, setQuantity] = useState<number>(1);
+
+  // unwrap params Promise using React.use() before accessing properties
+  const resolvedParams = React.use(params) as { id: string };
+  const product = PRODUCTS.find((p) => p.id === parseInt(resolvedParams.id));
 
   if (!product) {
     return <div>Loading...</div>;
   }
 
-  const getName = () => {
+  const getName = (): string => {
     if (currentLang === "hi") return product.nameHi || product.name;
     if (currentLang === "mr") return product.nameMr || product.name;
     return product.name;
   };
 
-  const getDescription = () => {
+  const getDescription = (): string => {
     if (currentLang === "hi")
       return product.descriptionHi || product.description;
     if (currentLang === "mr")
@@ -32,8 +51,8 @@ export default function ProductDetail({ params }) {
     return product.description;
   };
 
-  const handleAddToCart = () => {
-    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+  const handleAddToCart = (): void => {
+    const cart: CartItem[] = JSON.parse(localStorage.getItem("cart") || "[]");
     const existingItem = cart.find((item) => item.id === product.id);
 
     if (existingItem) {
@@ -48,8 +67,7 @@ export default function ProductDetail({ params }) {
 
   return (
     <>
-      <Header currentLang={currentLang} setCurrentLang={setCurrentLang} />
-
+      {/* Header removed from here — layout renders it globally */}
       <main className="max-w-7xl mx-auto px-4 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Product Media */}
@@ -135,7 +153,7 @@ export default function ProductDetail({ params }) {
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
                   className="px-5 py-3 hover:bg-[var(--color-gold)] hover:text-white transition-colors font-bold"
                 >
-                  −
+                  -
                 </button>
                 <span className="px-8 py-3 font-bold text-lg border-x border-white">
                   {quantity}

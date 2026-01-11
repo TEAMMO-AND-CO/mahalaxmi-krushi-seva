@@ -2,18 +2,20 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import Header from "../components/Header";
+// import Header from "../components/Header"; // Header import removed
 import Footer from "../components/Footer";
 import ProductCard from "../components/ProductCard";
 import { PRODUCTS, BLOGS_VIDEOS } from "../data/products";
 import { CATEGORIES } from "../config/constants";
+import { Product, Language } from "../types";
 
 export default function HomePage() {
-  const [currentLang, setCurrentLang] = useState("en");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("All Products");
+  const [currentLang] = useState<Language>("en");
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [selectedCategory, setSelectedCategory] =
+    useState<string>("All Products");
 
-  const filteredProducts = PRODUCTS.filter((product) => {
+  const filteredProducts: Product[] = PRODUCTS.filter((product) => {
     const matchesSearch = product.name
       .toLowerCase()
       .includes(searchQuery.toLowerCase());
@@ -25,8 +27,7 @@ export default function HomePage() {
 
   return (
     <>
-      <Header currentLang={currentLang} setCurrentLang={setCurrentLang} />
-
+      {/* Header removed from here — layout renders it globally */}
       <main>
         {/* Hero Section */}
         <section className="relative min-h-[70vh] flex items-center bg-gradient-to-br from-[var(--color-green-light)] via-[var(--color-green)] to-[var(--color-green-dark)] overflow-hidden">

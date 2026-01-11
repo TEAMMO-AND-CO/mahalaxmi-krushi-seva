@@ -1,4 +1,30 @@
-export const APP_CONFIG = {
+interface PickupStore {
+  id: number;
+  name: string;
+  address: string;
+}
+
+interface PaymentMethod {
+  id: string;
+  label: string;
+  icon: string;
+}
+
+interface Language {
+  code: string;
+  label: string;
+  flag: string;
+}
+
+interface AppConfig {
+  deliveryFee: number;
+  freeDeliveryThreshold: number;
+  pickupStores: PickupStore[];
+  paymentMethods: PaymentMethod[];
+  languages: Language[];
+}
+
+export const APP_CONFIG: AppConfig = {
   deliveryFee: 50,
   freeDeliveryThreshold: 1000,
   pickupStores: [
@@ -18,7 +44,7 @@ export const APP_CONFIG = {
   ],
 };
 
-export const CATEGORIES = [
+export const CATEGORIES: readonly string[] = [
   "All Products",
   "Fertilizers",
   "Seeds",

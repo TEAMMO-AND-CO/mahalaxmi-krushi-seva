@@ -1,4 +1,6 @@
-export const PRODUCTS = [
+import { Product, BlogVideo } from "../types";
+
+export const PRODUCTS: readonly Product[] = [
   {
     id: 1,
     name: "Organic Fertilizer",
@@ -50,7 +52,7 @@ export const PRODUCTS = [
   },
 ];
 
-export const BLOGS_VIDEOS = [
+export const BLOGS_VIDEOS: readonly BlogVideo[] = [
   {
     id: 1,
     title: "Sustainable Farming Practices",

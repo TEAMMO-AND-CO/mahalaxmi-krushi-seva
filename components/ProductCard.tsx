@@ -1,14 +1,23 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Product, Language } from "../types";
 
-export default function ProductCard({ product, lang = "en" }) {
-  const getName = () => {
+interface ProductCardProps {
+  product: Product;
+  lang?: Language;
+}
+
+export default function ProductCard({
+  product,
+  lang = "en",
+}: ProductCardProps) {
+  const getName = (): string => {
     if (lang === "hi") return product.nameHi || product.name;
     if (lang === "mr") return product.nameMr || product.name;
     return product.name;
   };
 
-  const getDescription = () => {
+  const getDescription = (): string => {
     if (lang === "hi") return product.descriptionHi || product.description;
     if (lang === "mr") return product.descriptionMr || product.description;
     return product.description;
