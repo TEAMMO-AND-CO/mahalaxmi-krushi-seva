@@ -1,0 +1,248 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model buyers {
+  buyer_id      Int            @id @default(autoincrement())
+  name          String         @db.VarChar(200)
+  contact_phone String?        @db.VarChar(20)
+  address       String?
+  cart          cart[]
+  cart_item     cart_item[]
+  debt          debt[]
+  debt_payment  debt_payment[]
+  orders        orders[]
+  payment       payment[]
+
+  @@index([contact_phone], map: "idx_buyers_contact_phone")
+  @@index([name], map: "idx_buyers_name")
+}
+
+model cart {
+  cart_id    Int         @id @default(autoincrement())
+  created_at DateTime?   @default(now()) @db.Timestamp(6)
+  buyer_id   Int?
+  buyers     buyers?     @relation(fields: [buyer_id], references: [buyer_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_cart_buyer")
+  cart_item  cart_item[]
+
+  @@index([created_at], map: "idx_cart_created_at")
+  @@index([buyer_id], map: "idx_cart_buyer_id")
+}
+
+model cart_item {
+  cart_item_id Int       @id @default(autoincrement())
+  cart_id      Int
+  product_id   Int
+  qty          Int
+  added_at     DateTime? @default(now()) @db.Timestamp(6)
+  buyer_id     Int?
+  buyers       buyers?   @relation(fields: [buyer_id], references: [buyer_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_cart_item_buyer")
+  cart         cart      @relation(fields: [cart_id], references: [cart_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_cart_item_cart")
+  product      product   @relation(fields: [product_id], references: [product_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_cart_item_product")
+
+  @@index([cart_id], map: "idx_cart_item_cart_id")
+  @@index([product_id], map: "idx_cart_item_product_id")
+  @@index([buyer_id], map: "idx_cart_item_buyer_id")
+}
+
+model category {
+  category_id Int       @id @default(autoincrement())
+  name        String    @db.VarChar(150)
+  slug        String    @unique @db.VarChar(150)
+  product     product[]
+
+  @@index([name], map: "idx_category_name")
+}
+
+model coupon {
+  coupon_id        Int            @id @default(autoincrement())
+  code             String?        @unique @db.VarChar(50)
+  discount_percent Decimal?       @db.Decimal(5, 2)
+  min_order_amount Decimal?       @db.Decimal(12, 2)
+  valid_from       DateTime?      @db.Date
+  valid_to         DateTime?      @db.Date
+  order_coupon     order_coupon[]
+
+  @@index([valid_from], map: "idx_coupon_valid_from")
+  @@index([valid_to], map: "idx_coupon_valid_to")
+}
+
+model debt {
+  debt_id           Int            @id @default(autoincrement())
+  buyer_id          Int
+  order_id          Int?
+  total_amount      Decimal        @db.Decimal(12, 2)
+  paid_amount       Decimal?       @default(0) @db.Decimal(12, 2)
+  balance_amount    Decimal        @db.Decimal(12, 2)
+  status            String?        @default("PENDING") @db.VarChar(30)
+  due_date          DateTime?      @db.Date
+  last_payment_date DateTime?      @db.Timestamp(6)
+  notes             String?
+  created_at        DateTime?      @default(now()) @db.Timestamp(6)
+  updated_at        DateTime?      @db.Timestamp(6)
+  buyers            buyers         @relation(fields: [buyer_id], references: [buyer_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_debt_buyer")
+  orders            orders?        @relation(fields: [order_id], references: [order_id], onUpdate: NoAction, map: "fk_debt_order")
+  debt_payment      debt_payment[]
+
+  @@index([buyer_id], map: "idx_debt_buyer_id")
+  @@index([due_date], map: "idx_debt_due_date")
+  @@index([order_id], map: "idx_debt_order_id")
+  @@index([status], map: "idx_debt_status")
+}
+
+model debt_payment {
+  debt_payment_id Int       @id @default(autoincrement())
+  debt_id         Int
+  buyer_id        Int
+  amount_paid     Decimal   @db.Decimal(12, 2)
+  payment_method  String?   @db.VarChar(50)
+  payment_date    DateTime? @default(now()) @db.Timestamp(6)
+  remarks         String?
+  buyers          buyers    @relation(fields: [buyer_id], references: [buyer_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_debt_payment_buyer")
+  debt            debt      @relation(fields: [debt_id], references: [debt_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_debt_payment_debt")
+
+  @@index([buyer_id], map: "idx_debt_payment_buyer_id")
+  @@index([debt_id], map: "idx_debt_payment_debt_id")
+  @@index([payment_date], map: "idx_debt_payment_payment_date")
+}
+
+model order_coupon {
+  order_coupon_id Int    @id @default(autoincrement())
+  order_id        Int
+  coupon_id       Int
+  coupon          coupon @relation(fields: [coupon_id], references: [coupon_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_order_coupon_coupon")
+  orders          orders @relation(fields: [order_id], references: [order_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_order_coupon_order")
+
+  @@index([coupon_id], map: "idx_order_coupon_coupon_id")
+  @@index([order_id], map: "idx_order_coupon_order_id")
+}
+
+model order_item {
+  order_item_id Int      @id @default(autoincrement())
+  order_id      Int
+  product_id    Int?
+  qty           Int
+  unit_price    Decimal  @db.Decimal(12, 2)
+  orders        orders   @relation(fields: [order_id], references: [order_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_order_item_order")
+  product       product? @relation(fields: [product_id], references: [product_id], onUpdate: NoAction, map: "fk_order_item_product")
+
+  @@index([order_id], map: "idx_order_item_order_id")
+  @@index([product_id], map: "idx_order_item_product_id")
+}
+
+model orders {
+  order_id               Int            @id @default(autoincrement())
+  order_status           String?        @default("PENDING") @db.VarChar(50)
+  order_date             DateTime?      @default(now()) @db.Timestamp(6)
+  total_amount           Decimal        @db.Decimal(12, 2)
+  delivery_address       String?
+  delivery_phone         String?        @db.VarChar(20)
+  expected_delivery_date DateTime?      @db.Date
+  buyer_id               Int?
+  debt                   debt[]
+  order_coupon           order_coupon[]
+  order_item             order_item[]
+  buyers                 buyers?        @relation(fields: [buyer_id], references: [buyer_id], onUpdate: NoAction, map: "fk_orders_buyer")
+  payment                payment[]
+
+  @@index([order_date], map: "idx_orders_order_date")
+  @@index([order_status], map: "idx_orders_order_status")
+  @@index([buyer_id], map: "idx_orders_buyer_id")
+}
+
+model payment {
+  payment_id     Int       @id @default(autoincrement())
+  order_id       Int
+  buyer_id       Int?
+  payment_method String?   @db.VarChar(50)
+  payment_status String?   @db.VarChar(50)
+  payment_date   DateTime? @default(now()) @db.Timestamp(6)
+  amount_paid    Decimal   @db.Decimal(12, 2)
+  buyers         buyers?   @relation(fields: [buyer_id], references: [buyer_id], onUpdate: NoAction, map: "fk_payment_buyer")
+  orders         orders    @relation(fields: [order_id], references: [order_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_payment_order")
+
+  @@index([buyer_id], map: "idx_payment_buyer_id")
+  @@index([order_id], map: "idx_payment_order_id")
+  @@index([payment_date], map: "idx_payment_payment_date")
+}
+
+model product {
+  product_id     Int              @id @default(autoincrement())
+  seller_id      Int?
+  category_id    Int?
+  name           String           @db.VarChar(255)
+  description    String?
+  price          Decimal          @db.Decimal(12, 2)
+  discount_price Decimal?         @db.Decimal(12, 2)
+  quantity       Int              @default(0)
+  gst_percent    Decimal?         @default(0) @db.Decimal(4, 2)
+  sku            String?          @db.VarChar(80)
+  is_active      Boolean?         @default(true)
+  created_at     DateTime?        @default(now()) @db.Timestamp(6)
+  cart_item      cart_item[]
+  order_item     order_item[]
+  category       category?        @relation(fields: [category_id], references: [category_id], onUpdate: NoAction, map: "fk_product_category")
+  seller         seller?          @relation(fields: [seller_id], references: [seller_id], onUpdate: NoAction, map: "fk_product_seller")
+  product_image  product_image[]
+  product_review product_review[]
+  wishlist       wishlist[]
+
+  @@index([category_id], map: "idx_product_category_id")
+  @@index([created_at], map: "idx_product_created_at")
+  @@index([is_active], map: "idx_product_is_active")
+  @@index([name], map: "idx_product_name")
+  @@index([price], map: "idx_product_price")
+  @@index([seller_id, is_active], map: "idx_product_seller_active")
+  @@index([seller_id], map: "idx_product_seller_id")
+  @@index([sku], map: "idx_product_sku")
+}
+
+model product_image {
+  image_id   Int      @id @default(autoincrement())
+  product_id Int
+  image_url  String
+  is_primary Boolean? @default(false)
+  product    product  @relation(fields: [product_id], references: [product_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_product_image_product")
+
+  @@index([is_primary], map: "idx_product_image_is_primary")
+  @@index([product_id], map: "idx_product_image_product_id")
+}
+
+model product_review {
+  review_id   Int       @id @default(autoincrement())
+  product_id  Int
+  rating      Int?
+  comment     String?
+  review_date DateTime? @default(now()) @db.Timestamp(6)
+  product     product   @relation(fields: [product_id], references: [product_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_product_review_product")
+
+  @@index([product_id], map: "idx_product_review_product_id")
+  @@index([rating], map: "idx_product_review_rating")
+}
+
+model seller {
+  seller_id     Int       @id @default(autoincrement())
+  name          String    @db.VarChar(200)
+  contact_phone String?   @db.VarChar(20)
+  contact_email String?   @db.VarChar(100)
+  address       String?
+  product       product[]
+
+  @@index([contact_email], map: "idx_seller_contact_email")
+  @@index([contact_phone], map: "idx_seller_contact_phone")
+  @@index([name], map: "idx_seller_name")
+}
+
+model wishlist {
+  wishlist_id Int       @id @default(autoincrement())
+  product_id  Int
+  added_at    DateTime? @default(now()) @db.Timestamp(6)
+  product     product   @relation(fields: [product_id], references: [product_id], onDelete: Cascade, onUpdate: NoAction, map: "fk_wishlist_product")
+
+  @@index([product_id], map: "idx_wishlist_product_id")
+}
